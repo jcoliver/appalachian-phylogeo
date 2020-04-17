@@ -6,10 +6,21 @@
 rm(list = ls())
 
 ################################################################################
+library(readr) # for reading in the "other" blocks
+
 # Get all partition data files
 part_files = list.files(path = "data", 
                         pattern = "*_part_data.csv",
                         full.names = TRUE)
+
+# Make sure the partition_directory folder exists
+if (!dir.exists("partition_directory")) {
+  dir.create("partition_directory")
+}
+
+# Grab the "other blocks" i.e. template file which has all but the alignment 
+# block and the data block
+other_blocks <- readr::read_file(file = "data/config_template.txt")
 
 # Iterate over part_files, read in gene and codon data
 for (one_file in part_files) {
@@ -17,15 +28,16 @@ for (one_file in part_files) {
   part_prefix = gsub(pattern = "_part_data.csv", 
                      replacement = "", 
                      x = part_filename)
-  part_path = paste0(dirname(one_file), "/", part_prefix)
+  part_path = paste0("partition_finder/", part_prefix)
   
-  alignment_block = paste0("## ALIGNMENT FILE #\nalignment = ", part_prefix, ".phy")
+  alignment_filename = paste0(part_prefix, ".phy")
+  
+  alignment_block = paste0("## ALIGNMENT FILE #\nalignment = ", 
+                           alignment_filename)
 
-  cat(alignment_block, "\n")
-  
   # Read in the data
   part_data = read.csv(file = one_file, stringsAsFactors = FALSE)
-  # cat("\n\n", part_prefix, "\n")
+
   # Iterate over each row (gene) to write appropriate string for data block
   data_block <- "## DATA BLOCKS ##\n[data_blocks]"
   
@@ -60,21 +72,27 @@ for (one_file in part_files) {
                            "-", gene_end, ";")
     }
   }
-  config_filename = paste0(part_path, "/partition_finder.cfg")
+  
+  # Make sure a directory for the configuration file exists
   if (!dir.exists(part_path)) {
-    # dir.create(part_path)
-    cat("\n\nWill create ", part_path, "\n")
+    dir.create(part_path)
+    message(paste0("\n\nCreated directory ", part_path))
   }
   
-  # Will write to 
-  cat("Will write to ", config_filename, "\n")
+  # Write the alignment block, other blocks, and data block to the 
+  # configuration file
+  config_filename = paste0(part_path, "/partition_finder.cfg")
+
+  sink(file = config_filename)
+  cat(alignment_block, "\n\n")
+  cat(other_blocks, "\n")
   cat(data_block)
+  sink()
+  message(paste0("\nWrote configuration file to ", config_filename))
+  
+  # And go ahead and copy the alignment file to the same directory
+  
+  file.copy(from = paste0("data/", alignment_filename),
+            to = paste0(part_path, "/", alignment_filename))
+  message(paste0("Copied alignment file ", alignment_filename, " to ", part_path))
 }
-
-# + Information needed (that will vary by data set)
-#     1. Name of alignment file
-#     2. Data blocks (locations of genes and codons)
-# + Create configuration template
-# + Extract the two pieces of information
-# + Create a folder in partition_finder that has the config file and the phylip file
-
