@@ -7,9 +7,6 @@ rm(list = ls())
 
 ################################################################################
 # Get all partition data files
-# Change this so each phylip file is used, then create _part_data.csv file
-# only proceed if that file exists
-# Why? What is added value of this?
 part_files = list.files(path = "data", 
                         pattern = "*_part_data.csv",
                         full.names = TRUE)
@@ -20,9 +17,15 @@ for (one_file in part_files) {
   part_prefix = gsub(pattern = "_part_data.csv", 
                      replacement = "", 
                      x = part_filename)
+  part_path = paste0(dirname(one_file), "/", part_prefix)
+  
+  alignment_block = paste0("## ALIGNMENT FILE #\nalignment = ", part_prefix, ".phy")
+
+  cat(alignment_block, "\n")
+  
   # Read in the data
   part_data = read.csv(file = one_file, stringsAsFactors = FALSE)
-  cat("\n", part_prefix, "\n")
+  # cat("\n\n", part_prefix, "\n")
   # Iterate over each row (gene) to write appropriate string for data block
   data_block <- "## DATA BLOCKS ##\n[data_blocks]"
   
@@ -31,25 +34,40 @@ for (one_file in part_files) {
     gene_start = part_data$start[i]
     gene_end = part_data$end[i]
     codon_start = part_data$codon_start[i]
-    cat(gene_name, " ", gene_start, "-", gene_end, " ", codon_start, "\n")
     # data block will differ between coding and non-coding
     if (!is.na(codon_start)) {
       # coding data, codon_start is not NA
-      # ## DATA BLOCKS ##
-      # [data_blocks]
-      # COI_pos1 = 2-762\3;
-      # COI_pos2 = 3-762\3;
-      # COI_pos3 = 1-762\3;
       # COII_pos1 = 763-1125\3;
       # COII_pos2 = 764-1125\3;
       # COII_pos3 = 765-1125\3;
+
+      codons = paste0(gene_name, paste0("_pos", 1:3))
+
+      pos_starts <- c(0, 1, 2)
+      if (codon_start == 2) {
+        pos_starts <- pos_starts[c(2, 3, 1)]
+      } else if (codon_start == 3) {
+        pos_starts <- pos_starts[c(3, 1, 2)]
+      }
+
+      codons = paste0(codons, " = ", (gene_start + pos_starts), "-", gene_end, "\\3;")
+      for (codon in codons) {
+        data_block = paste0(data_block, "\n", codon)
+      }
     } else {
       # non-coding data, codon_start is NA
-      # name = start-end;
       data_block <- paste0(data_block, "\n", gene_name, " = ", gene_start, 
                            "-", gene_end, ";")
     }
   }
+  config_filename = paste0(part_path, "/partition_finder.cfg")
+  if (!dir.exists(part_path)) {
+    # dir.create(part_path)
+    cat("\n\nWill create ", part_path, "\n")
+  }
+  
+  # Will write to 
+  cat("Will write to ", config_filename, "\n")
   cat(data_block)
 }
 
