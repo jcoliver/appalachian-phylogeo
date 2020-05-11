@@ -1,0 +1,6 @@
+# BRANCHLENGTHS #
+branchlengths = linked;
+
+# MODELS OF EVOLUTION #
+models = all;
+model_selection = aicc;

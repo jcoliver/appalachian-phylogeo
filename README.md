@@ -3,6 +3,16 @@
 ## Tasks
 1. Identify partitions & models
     1. Install PartitionFinder 2 and dependencies [http://www.robertlanfear.com/partitionfinder/](http://www.robertlanfear.com/partitionfinder/)
+        + Requires use of Python version 2.7.x, and additional packages:
+            + numpy
+                + Ultimately had to uninstall a few old versions of this via
+                `python2 -m pip uninstall numpy`
+            + pandas
+            + pytables `python2 -m pip install tables==3.5.2`
+            + pyparsing
+            + scipy
+            + sklearn
+            + All except pytables installed via `python2 -m pip install <package-name>`
     2. Convert from FASTA to phylip format
         + fasta-to-phylip.R
         + Uses R package ape
@@ -14,7 +24,7 @@
         + Create configuration template
         + Extract the two pieces of information and build the partition_finder.cfg file
         + Create a folder in partition_finder that has the config file and the phylip file
-    4. Create bash script to run PartitionFinder for each data set (should be callable via `python <path-to-PartitionFinder.py> <path-to-folder-with-data>`)
+    4. Create bash script to run PartitionFinder for each data set (should be callable via `python2 <path-to-PartitionFinder.py> <path-to-folder-with-data>`)
         + find-partitions.sh
 2. Infer trees
     1. ...

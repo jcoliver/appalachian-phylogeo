@@ -98,6 +98,7 @@ for (one_file in part_files) {
   # And go ahead and copy the alignment file to the same directory
   
   file.copy(from = paste0("data/", alignment_filename),
-            to = paste0(part_path, "/", alignment_filename))
+            to = paste0(part_path, "/", alignment_filename),
+            overwrite = TRUE)
   message(paste0("Copied alignment file ", alignment_filename, " to ", part_path))
 }

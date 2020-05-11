@@ -27,5 +27,7 @@ for (one_file in fasta_files){
   df <- read.FASTA(file = one_file)
   write.dna(x = df,
             file = phy_filename,
-            format = "sequential")
+            format = "sequential", 
+            nbcol = -1, # writes sequence on single line
+            colsep = "")
 }
