@@ -18,9 +18,10 @@ if (!dir.exists("partition_directory")) {
   dir.create("partition_directory")
 }
 
-# Grab the "other blocks" i.e. template file which has all but the alignment 
+# Grab the "other blocks" i.e. template files which have all but the alignment 
 # block and the data block
-other_blocks <- readr::read_file(file = "data/config_template.txt")
+branch_model_blocks <- readr::read_file(file = "data/config_template_branch_models.txt")
+schemes_block <- readr::read_file(file = "data/config_template_schemes.txt")
 
 # Iterate over part_files, read in gene and codon data
 for (one_file in part_files) {
@@ -33,7 +34,8 @@ for (one_file in part_files) {
   alignment_filename = paste0(part_prefix, ".phy")
   
   alignment_block = paste0("## ALIGNMENT FILE #\nalignment = ", 
-                           alignment_filename)
+                           alignment_filename,
+                           ";")
 
   # Read in the data
   part_data = read.csv(file = one_file, stringsAsFactors = FALSE)
@@ -64,6 +66,7 @@ for (one_file in part_files) {
 
       codons = paste0(codons, " = ", (gene_start + pos_starts), "-", gene_end, "\\3;")
       for (codon in codons) {
+        cat("Add codon: ", codon, "\n")
         data_block = paste0(data_block, "\n", codon)
       }
     } else {
@@ -85,8 +88,10 @@ for (one_file in part_files) {
 
   sink(file = config_filename)
   cat(alignment_block, "\n\n")
-  cat(other_blocks, "\n")
-  cat(data_block)
+  cat(branch_model_blocks, "\n")
+  # Need to insert the data block between the models and schemes blocks
+  cat(data_block, "\n\n")
+  cat(schemes_block)
   sink()
   message(paste0("\nWrote configuration file to ", config_filename))
   
