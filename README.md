@@ -24,7 +24,8 @@
         + Create configuration template
         + Extract the two pieces of information and build the partition_finder.cfg file
         + Create a folder in partition_finder that has the config file and the phylip file
-    4. Create bash script to run PartitionFinder for each data set (should be callable via `python2 <path-to-PartitionFinder.py> <path-to-folder-with-data>`)
+    4. Make sure RAxML is installed so PartitionFinder can use it to evaluate models of evolution (and restrict evaluation to options available in RAxML)
+    5. Create bash script to run PartitionFinder for each data set (should be callable via `python2 <path-to-PartitionFinder.py> <path-to-folder-with-data>`)
         + find-partitions.sh
 2. Infer trees
     1. ...
