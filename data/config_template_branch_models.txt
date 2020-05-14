@@ -2,5 +2,5 @@
 branchlengths = linked;
 
 # MODELS OF EVOLUTION #
-models = all;
+models = INSERTMODELHERE;
 model_selection = aicc;

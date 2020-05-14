@@ -23,9 +23,12 @@
             2. Data blocks (locations of genes and codons)
         + Create configuration template
         + Extract the two pieces of information and build the partition_finder.cfg file
+        + RAxML will only allow a single type of rate heterogeneity for an analysis to be applied across all partitions. That is, they all need to be either GTR, GTR+G, or GTR+G+I. So will need to have separate partitionfinder runs for each of those three, then compare AICc values.
         + Create a folder in partition_finder that has the config file and the phylip file
     4. Make sure RAxML is installed so PartitionFinder can use it to evaluate models of evolution (and restrict evaluation to options available in RAxML)
     5. Create bash script to run PartitionFinder for each data set (should be callable via `python2 <path-to-PartitionFinder.py> <path-to-folder-with-data>`)
-        + find-partitions.sh
+        + run-partitionfinder.sh
+    6. Compare the best scheme from each of the three models (GTR vs. GTR+G vs. GTR+G+I) for each data set.
+        + compare-schemes.R
 2. Infer trees
     1. ...

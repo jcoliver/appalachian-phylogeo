@@ -8,8 +8,7 @@
 PFLOC="../partitionfinder-2.1.1/PartitionFinder.py"
 
 # all the data folders (ones where we had partition data files)
-
-FOLDERS=($(ls -d partition_finder/*/))
+FOLDERS=($(ls -d partition_finder/*/GTR*/))
 # FOLDERS=($(ls paritition_finder/*_part_data.csv | sed 's/data\///g' | sed 's/_part_data.csv//g'))
 
 # iterate over all folders and run partition finder
