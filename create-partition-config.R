@@ -26,8 +26,8 @@ branch_model_blocks <- readr::read_file(file = "data/config_template_branch_mode
 schemes_block <- readr::read_file(file = "data/config_template_schemes.txt")
 
 # Strings to indicate model to test in "models = " statement in configuration 
-# file
-models <- c("GTR", "GTR+G", "GTR+G+I")
+# file; GTR+I+G is odd, but that's the way PartitionFinder wants it
+models <- c("GTR", "GTR+G", "GTR+I+G")
 
 # Iterate over part_files, read in gene and codon data
 for (one_file in part_files) {
@@ -37,7 +37,13 @@ for (one_file in part_files) {
                      replacement = "", 
                      x = part_filename)
   part_path <- paste0("partition_finder/", part_prefix)
-  
+
+  # Make sure the dataset folder exists
+  if (!dir.exists(part_path)) {
+    dir.create(part_path)
+    message(paste0("\n\nCreated directory ", part_path))
+  }
+
   alignment_filename = paste0(part_prefix, ".phy")
   alignment_block = paste0("## ALIGNMENT FILE #\nalignment = ", 
                            alignment_filename,
@@ -93,7 +99,7 @@ for (one_file in part_files) {
 
     # Update the "models = INSERTMODELHERE" statement with the actual model to 
     # test
-    branch_model_blocks <- gsub(pattern = "INSERTMODELHERE",
+    one_model_blocks <- gsub(pattern = "INSERTMODELHERE",
                                 replacement = model,
                                 x = branch_model_blocks)
     
@@ -109,7 +115,7 @@ for (one_file in part_files) {
     
     sink(file = config_filename)
     cat(alignment_block, "\n\n")
-    cat(branch_model_blocks, "\n")
+    cat(one_model_blocks, "\n")
     # Need to insert the data block between the models and schemes blocks
     cat(data_block, "\n\n")
     cat(schemes_block)

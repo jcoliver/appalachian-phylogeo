@@ -15,6 +15,6 @@ FOLDERS=($(ls -d partition_finder/*/GTR*/))
 for folder in ${FOLDERS[@]}; do
   # echo $folder
   PYCMD="python2 $PFLOC --raxml --force-restart $folder"
-  echo $PYCMD
-# `python <path-to-PartitionFinder.py> <path-to-folder-with-data>`
+  # echo $PYCMD
+  eval $PYCMD
 done

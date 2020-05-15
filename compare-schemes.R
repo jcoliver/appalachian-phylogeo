@@ -18,7 +18,7 @@ datasets <- gsub(pattern = "_part_data.csv",
                                          full.names = TRUE)))
 
 
-models <- c("GTR", "GTR+G", "GTR+G+I")
+models <- c("GTR", "GTR+G", "GTR+I+G")
 # Iterate over each data set
 # 1. Pull out AICc for each of the models
 # 2. Create a table with each AICc
@@ -57,12 +57,12 @@ for (dataset in datasets) {
     scheme_score <- trimws(x = scheme_score, which = "both")
     
     # Store scheme is appropriate row of the table
-    model_df$AICc[model_df$model == model] <- scheme_score
+    model_df$AICc[model_df$model == model] <- scheme_score[2]
   }
   # Sort in ascending order of AICc; smallest is best
   model_df <- model_df[order(model_df$AICc), ]
   
-  model_df
+  print(model_df)
   
   # Copy the best_scheme.txt file into partition_finder/<dataset> directory
   message("\nStill need to copy best_scheme.txt...")

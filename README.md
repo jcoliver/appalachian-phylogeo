@@ -1,5 +1,7 @@
 # Phylogenetic analyses for southern appalachian arthropod phylogeography work
 
+**NOTE:** gene info for N. americanus needs to be looked at. Two nucleotides are left out of the specification in the info.txt file. Arbitrarily assigned them to 12S.
+
 ## Tasks
 1. Identify partitions & models
     1. Install PartitionFinder 2 and dependencies [http://www.robertlanfear.com/partitionfinder/](http://www.robertlanfear.com/partitionfinder/)
