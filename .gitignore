@@ -1,5 +1,7 @@
 data/
 partition_finder/
+tree_inference/*/bs-1000/
+tree_inference/*/*phy
 .Rproj.user
 *.Rproj
 !data/config_template_*

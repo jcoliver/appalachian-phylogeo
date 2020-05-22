@@ -16,7 +16,7 @@ library(readr) # for reading in the "other" blocks
 
 # Get all partition data files; these have gene and, where applicable, codon 
 # information
-part_files = list.files(path = "data", 
+part_files <- list.files(path = "data", 
                         pattern = "*_part_data.csv",
                         full.names = TRUE)
 

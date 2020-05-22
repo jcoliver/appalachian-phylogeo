@@ -28,9 +28,13 @@
         + RAxML will only allow a single type of rate heterogeneity for an analysis to be applied across all partitions. That is, they all need to be either GTR, GTR+G, or GTR+G+I. So will need to have separate partitionfinder runs for each of those three, then compare AICc values.
         + Create a folder in partition_finder that has the config file and the phylip file
     4. Make sure RAxML is installed so PartitionFinder can use it to evaluate models of evolution (and restrict evaluation to options available in RAxML)
-    5. Create bash script to run PartitionFinder for each data set (should be callable via `python2 <path-to-PartitionFinder.py> <path-to-folder-with-data>`)
+    5. Create bash script to run PartitionFinder for each data set: `python2 <path-to-PartitionFinder.py> --raxml --force-restart <path-to-folder-with-data>`
         + run-partitionfinder.sh
-    6. Compare the best scheme from each of the three models (GTR vs. GTR+G vs. GTR+G+I) for each data set.
+    6. Compare the best scheme from each of the three models (GTR vs. GTR+G vs. GTR+G+I) for each data set. Save the best_scheme.txt file to the appropriate folder in partition_finder folder. e.g. best scheme for the Cpun_mtCo12 data goes into partition_finder/Cpun_mtCo12
         + compare-schemes.R
 2. Infer trees
-    1. ...
+    0. See tree_inference/host-100-bs.sh for example of how to do this.
+    1. Set up folders in tree_inference for each data set with the .phy files from the data folder
+        + setup-tree-inference.R
+    2. Create a .parts file for each data set. Current implementation is to do this manually, copy-pasting from partition_finder/<DATASET>/best_scheme_overall.txt into tree_inference/<DATASET>/<DATASET>.parts
+    3. Create a script for running RAxML bootstraps. Also a manual process.
