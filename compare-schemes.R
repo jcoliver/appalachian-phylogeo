@@ -28,8 +28,16 @@ models <- c("GTR", "GTR+G", "GTR+I+G")
 for (dataset in datasets) {
   cat("One dataset: ", dataset, "\n")
 
+  # Table that will hold AICc values
   model_df <- data.frame(model = models,
                          AICc = NA)
+  
+  # The path to the file with the overall best scheme for this dataset
+  best_scheme_path <- NA
+  
+  # The score of the best scheme overall for this data set
+  best_scheme_score <- Inf
+  
   for (model in models) {
     # remove plus signs from model, since they are not in folder names
     model_no_plus <- gsub(pattern = "\\+", 
@@ -56,14 +64,31 @@ for (dataset in datasets) {
                                     split = ":"))
     scheme_score <- trimws(x = scheme_score, which = "both")
     
+    # A little wrangling to ensure it is numeric
+    scheme_score <- as.numeric(scheme_score[2])
+    
     # Store scheme is appropriate row of the table
-    model_df$AICc[model_df$model == model] <- scheme_score[2]
+    model_df$AICc[model_df$model == model] <- scheme_score
+    
+    # Compare this score to other scores for this dataset
+    if (scheme_score < best_scheme_score) {
+      # If it is better (lower) than any schemes so far, update best_scheme_*
+      # values
+      best_scheme_score <- scheme_score
+      best_scheme_path <- scheme_path
+    }
   }
   # Sort in ascending order of AICc; smallest is best
   model_df <- model_df[order(model_df$AICc), ]
   
   print(model_df)
-  
+
   # Copy the best_scheme.txt file into partition_finder/<dataset> directory
-  message("\nStill need to copy best_scheme.txt...")
+  best_scheme_destination = paste0("partition_finder/",
+                                   dataset, 
+                                   "/best_scheme_overall.txt")
+  
+  file.copy(from = best_scheme_path,
+            to = best_scheme_destination,
+            overwrite = TRUE)
 }
