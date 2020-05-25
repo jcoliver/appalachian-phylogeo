@@ -3,7 +3,7 @@
 # Only need to change these five variables
 NUMBS="1000"
 DATASET="Odis_mtCo12"
-MODEL="GTR"
+MODEL="GTRCAT"
 OUTGROUP="O_striat"
  # Absolute path for writing output files, because RAxML is dumb
 ABSPATH="~/Documents/Science/Papers/Appalachian-Phylo/appalachian-phylogeo/tree_inference"

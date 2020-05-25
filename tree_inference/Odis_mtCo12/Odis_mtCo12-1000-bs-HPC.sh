@@ -3,7 +3,7 @@
 # Only need to change these five variables
 NUMBS="1000"
 DATASET="Odis_mtCo12"
-MODEL="GTR"
+MODEL="GTRCAT"
 OUTGROUP="O_striat"
 #ABSPATH="~/Documents/Science/Papers/Appalachian-Phylo/appalachian-phylogeo/tree_inference"
 
@@ -22,7 +22,7 @@ echo "===   START $ANALYSISNAME   ==="
 # [ ! -d "bs-$NUMBS" ] && eval mkdir "bs-$NUMBS"
 
 # Remove previous RAxML output files
-# eval rm "${NUMBS}-bs/RAxML_*"
+eval rm "RAxML_*.${PREFIX}"
 
 # Unclear why `eval` is needed, but script won't work without it
 eval "$RAXMLPATH" -f a -T 8 -p $SEED -x $SEED -s "$SEQFILE" -n "$PREFIX" -m "$MODEL" -"#$NUMBS" -T 6 -o "$OUTGROUP" -q "$PARTSFILE"

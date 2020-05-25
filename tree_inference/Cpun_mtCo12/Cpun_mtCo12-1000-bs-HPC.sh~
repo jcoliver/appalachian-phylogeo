@@ -2,10 +2,10 @@
 
 # Only need to change these five variables
 NUMBS="1000"
-DATASET="Rfla_mtCo12"
-MODEL="GTRGAMMA"
-OUTGROUP="R_virgin"
-# Absolute path for writing output files, because RAxML is dumb
+DATASET="Cpun_mtCo12"
+MODEL="GTRGAMMAI"
+OUTGROUP="C_relict"
+ # Absolute path for writing output files, because RAxML is dumb
 ABSPATH="~/Documents/Science/Papers/Appalachian-Phylo/appalachian-phylogeo/tree_inference"
 
 ANALYSISNAME="$NUMBS bootstraps on $DATASET data"
@@ -14,7 +14,7 @@ SEQFILE="${DATASET}.phy"
 OUTDIR="${ABSPATH}/${DATASET}/bs-$NUMBS"
 PREFIX="$DATAPATH-$NUMBS-bs"
 PARTSFILE="${DATASET}.parts"
-RAXMLPATH="raxmlHPC-PTHREADS"
+RAXMLPATH="raxmlHPC-PTHREADS-AVX2"
 SEED=202005221208
 
 echo "===   START $ANALYSISNAME   ==="

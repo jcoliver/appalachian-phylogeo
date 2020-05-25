@@ -4,7 +4,7 @@
 NUMBS="1000"
 DATASET="Rfla_mtCo12"
 MODEL="GTRGAMMA"
-OUTGROUP="R_virgi"
+OUTGROUP="R_virgin"
 #ABSPATH="~/Documents/Science/Papers/Appalachian-Phylo/appalachian-phylogeo/tree_inference"
 
 ANALYSISNAME="$NUMBS bootstraps on $DATASET data"
@@ -22,7 +22,7 @@ echo "===   START $ANALYSISNAME   ==="
 # [ ! -d "bs-$NUMBS" ] && eval mkdir "bs-$NUMBS"
 
 # Remove previous RAxML output files
-# eval rm "${NUMBS}-bs/RAxML_*"
+eval rm "RAxML_*.${PREFIX}"
 
 # Unclear why `eval` is needed, but script won't work without it
 eval "$RAXMLPATH" -f a -T 8 -p $SEED -x $SEED -s "$SEQFILE" -n "$PREFIX" -m "$MODEL" -"#$NUMBS" -T 6 -o "$OUTGROUP" -q "$PARTSFILE"

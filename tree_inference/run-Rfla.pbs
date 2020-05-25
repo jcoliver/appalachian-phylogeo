@@ -1,0 +1,36 @@
+#!/bin/bash
+
+### Run Rfla tree inference script
+
+### ### indicates comment
+### #PBS indicates PBS command
+
+### Set the job name
+#PBS -N Rfla
+
+### Specify the PI group for this job
+### List of PI groups available to each user can be found with "va" command
+#PBS -W group_list=jcoliver
+
+### Set the queue for this job as windfall or standard (adjust ### and #)
+###PBS -q standard
+#PBS -q windfall
+
+### Set the number of cores and memory that will be used for this job
+### select=1 is the node count, ncpus=4 are the cores in each node,
+### mem=4gb is memory per node, pcmem=6gb is the memory per core - optional
+#PBS -l select=1:ncpus=8:mem=12gb
+
+### Specify "wallclock time", hhh:mm:ss. Required field
+#PBS -l walltime=02:00:00
+
+### cd: set directory for job execution, ~netid = home directory path
+### executable command with trailing &. Do NOT assign more resources than the node has.
+### Each iteration below will consume memory and cpu.
+
+module load raxml
+
+cd ~jcoliver/Documents/appalachian-phylogeo/tree_inference/Rfla_mtCo12
+date
+./Rfla_mtCo12-1000-bs-HPC.sh
+date
